@@ -2,14 +2,17 @@
   "name": "glycemic",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/ronihcohen/glycemic",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "node ./node_modules/vue-gh-pages/index.js"
   },
   "dependencies": {
     "firebase": "^5.2.0",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue-gh-pages": "^1.16.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",

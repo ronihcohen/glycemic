@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table>
+    <p v-if="data.length === 0">Loading...</p>
+    <table v-if="data.length  > 0">
       <tr>
         <td colspan="2">
           <span @click="clear()">x</span> <input v-model="searchString" placeholder="Search">
