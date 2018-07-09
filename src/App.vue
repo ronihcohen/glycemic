@@ -26,5 +26,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background-color: #d3d3d33d;
+  min-height: 100vh;
 }
 </style>
