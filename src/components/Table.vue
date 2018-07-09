@@ -106,7 +106,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 table {
-  min-width: 500px;
+  min-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+  table {
+    min-width: 100%;
+  }
 }
 
 th {
