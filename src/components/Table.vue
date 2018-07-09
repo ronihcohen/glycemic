@@ -4,16 +4,20 @@
     <table v-if="data.length  > 0">
       <tr>
         <td colspan="2">
-          <span @click="clear()">x</span> <input v-model="searchString" placeholder="Search">
+          <div class="searchContainer">
+            <input v-model="searchString" placeholder="Search">
+            <span @click="clear()" v-if="searchString.length  > 0">Clear Search</span>
+          </div>
         </td>
       </tr>
       <tr class="header">
-        <th @click="sort('Name')">Name</th>
+        <th @click="sort('Name')">Name </th>
         <th class="GI" @click="sort('GI')">GI</th>
       </tr>
       <tr v-for="(value, key) in sortedData" v-bind:key="key">
         <td>{{value.Name}}</td>
-        <td class="GI">{{value.GI}}</td>
+        <td class="GI" v-bind:class="{ backGreen: parseGI(value.GI) <= 55,
+                            backRed: parseGI(value.GI) >= 70 }">{{value.GI}}</td>
       </tr>
       <tr>
         <td colspan="2" v-if="sortedData.length === 0">
@@ -65,6 +69,11 @@ export default {
     },
     clear: function() {
       this.searchString = "";
+    },
+    parseGI: function(x) {
+      return typeof x === "string"
+        ? parseInt(x.substring(0, x.indexOf("±")))
+        : x;
     }
   },
   computed: {
@@ -75,12 +84,8 @@ export default {
           a = a[this.currentSort];
           b = b[this.currentSort];
           if (this.currentSort === "GI") {
-            if (typeof a === "string") {
-              a = parseInt(a.substring(0, a.indexOf("±")));
-            }
-            if (typeof b === "string" && this.currentSort === "GI") {
-              b = parseInt(b.substring(0, b.indexOf("±")));
-            }
+            a = this.parseGI(a);
+            b = this.parseGI(b);
           }
           let modifier = 1;
           if (this.currentSortDir === "desc") modifier = -1;
@@ -89,7 +94,9 @@ export default {
           return 0;
         })
         .filter(item => {
-          return item.Name.includes(this.searchString);
+          return item.Name.toLowerCase().includes(
+            this.searchString.toLowerCase()
+          );
         });
     }
   }
@@ -99,8 +106,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 table {
-  border-spacing: 10px;
-  min-width: 600px;
+  min-width: 500px;
 }
 
 th {
@@ -109,24 +115,27 @@ th {
   outline: none;
 }
 
+.searchContainer {
+  display: flex;
+}
+
 input {
   border: none;
-  width: calc(100% - 16px);
   display: inline-block;
   outline: none;
+  font-size: 16px;
+  flex: 2;
 }
 
 span {
   cursor: pointer;
   user-select: none;
-  font-family: sans-serif;
   font-weight: bold;
   float: right;
-  font-size: 11px;
-}
-
-span:hover {
-  color: red;
+  text-decoration: underline;
+  flex: 1;
+  text-align: right;
+  font-size: 10px;
 }
 
 .header {
@@ -140,6 +149,20 @@ th:hover {
 }
 
 .GI {
-  width: 60px;
+  width: 55px;
+  text-align: center;
+  font-weight: bold;
+}
+
+td.GI {
+  background-color: lightgoldenrodyellow;
+}
+
+.GI.backGreen {
+  background-color: lightgreen;
+}
+
+.GI.backRed {
+  background-color: lightcoral;
 }
 </style>
