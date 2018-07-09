@@ -21,7 +21,7 @@
       </tr>
       <tr>
         <td colspan="2" v-if="sortedData.length === 0">
-          Your search - {{searchString}} - did not match any food.
+          Your search - {{searchString}} - did not match any GI.
         </td>
       </tr>
     </table>
@@ -172,5 +172,11 @@ td.GI {
 
 .GI.backRed {
   background-color: lightcoral;
+}
+
+p {
+  padding: 30px;
+  text-align: center;
+  font-size: 24px;
 }
 </style>
