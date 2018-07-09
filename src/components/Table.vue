@@ -122,6 +122,7 @@ span {
   font-family: sans-serif;
   font-weight: bold;
   float: right;
+  font-size: 11px;
 }
 
 span:hover {
