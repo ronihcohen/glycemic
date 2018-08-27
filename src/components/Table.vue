@@ -15,7 +15,7 @@
         <th class="GI" @click="sort('gi')">GI</th>
       </tr>
       <template v-for="(food, key) in sortedData">
-        <tr v-bind:key="key" @click.stop="food.isDetailsVisible = !food.isDetailsVisible" class="food-row">
+        <tr v-bind:key="key" @click="food.isDetailsVisible = !food.isDetailsVisible" class="food-row">
           <td v-bind:class="{bold:food.isDetailsVisible}">{{food.name}}</td>
           <td class="GI" v-bind:class="{ backGreen: parseGI(food.gi) <= 55,
                             backRed: parseGI(food.gi) >= 70 }">{{food.gi}}</td>
@@ -195,7 +195,7 @@ p {
 }
 
 .food-row td:first-child {
-  padding-left: 5px;
+  padding: 5px;
 }
 
 .food-row:hover {
