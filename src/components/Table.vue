@@ -11,13 +11,13 @@
         </td>
       </tr>
       <tr class="header">
-        <th @click="sort('Name')">Name </th>
-        <th class="GI" @click="sort('GI')">GI</th>
+        <th @click="sort('name')">Name </th>
+        <th class="GI" @click="sort('gi')">GI</th>
       </tr>
       <tr v-for="(value, key) in sortedData" v-bind:key="key">
-        <td>{{value.Name}}</td>
-        <td class="GI" v-bind:class="{ backGreen: parseGI(value.GI) <= 55,
-                            backRed: parseGI(value.GI) >= 70 }">{{value.GI}}</td>
+        <td>{{value.name}}</td>
+        <td class="GI" v-bind:class="{ backGreen: parseGI(value.gi) <= 55,
+                            backRed: parseGI(value.gi) >= 70 }">{{value.gi}}</td>
       </tr>
       <tr>
         <td colspan="2" v-if="sortedData.length === 0">
@@ -71,9 +71,7 @@ export default {
       this.searchString = "";
     },
     parseGI: function(x) {
-      return typeof x === "string"
-        ? parseInt(x.substring(0, x.indexOf("±")))
-        : x;
+      return typeof x === "string" ? parseInt(x) : x;
     }
   },
   computed: {
@@ -83,7 +81,7 @@ export default {
         .sort((a, b) => {
           a = a[this.currentSort];
           b = b[this.currentSort];
-          if (this.currentSort === "GI") {
+          if (this.currentSort === "gi") {
             a = this.parseGI(a);
             b = this.parseGI(b);
           }
@@ -94,9 +92,9 @@ export default {
           return 0;
         })
         .filter(item => {
-          return item.Name.toLowerCase().includes(
-            this.searchString.toLowerCase()
-          );
+          return item.name
+            .toLowerCase()
+            .includes(this.searchString.toLowerCase());
         });
     }
   }
