@@ -14,11 +14,15 @@
         <th @click="sort('name')">Name </th>
         <th class="GI" @click="sort('gi')">GI</th>
       </tr>
-      <tr v-for="(value, key) in sortedData" v-bind:key="key">
-        <td>{{value.name}}</td>
-        <td class="GI" v-bind:class="{ backGreen: parseGI(value.gi) <= 55,
-                            backRed: parseGI(value.gi) >= 70 }">{{value.gi}}</td>
-      </tr>
+      <template v-for="(food, key) in sortedData">
+        <tr v-bind:key="key" @click.stop="food.isDetailsVisible = !food.isDetailsVisible" class="food-row">
+          <td v-bind:class="{bold:food.isDetailsVisible}">{{food.name}}</td>
+          <td class="GI" v-bind:class="{ backGreen: parseGI(food.gi) <= 55,
+                            backRed: parseGI(food.gi) >= 70 }">{{food.gi}}</td>
+        </tr>
+        <Details v-bind:key="'details-'+key" v-bind:data="food" v-if="food.isDetailsVisible" class="details-row" />
+      </template>
+
       <tr>
         <td colspan="2" v-if="sortedData.length === 0">
           Your search - {{searchString}} - did not match any GI.
@@ -30,6 +34,8 @@
 
 <script>
 import * as firebase from "firebase/app";
+import Details from "./Details.vue";
+
 import "firebase/database";
 
 const config = {
@@ -42,11 +48,15 @@ firebase.initializeApp(config);
 
 export default {
   name: "Table",
+  components: {
+    Details
+  },
   data() {
     return {
       data: [],
       currentSort: "Name",
       currentSortDir: "asc",
+      currentDetails: null,
       searchString: ""
     };
   },
@@ -56,7 +66,9 @@ export default {
       .ref("/")
       .once("value")
       .then(snapshot => {
-        this.data = snapshot.val();
+        this.data = snapshot
+          .val()
+          .map(food => ({ ...food, isDetailsVisible: false }));
       });
   },
   methods: {
@@ -176,5 +188,22 @@ p {
   padding: 30px;
   text-align: center;
   font-size: 24px;
+}
+
+.food-row {
+  cursor: pointer;
+}
+
+.food-row td:first-child {
+  padding-left: 5px;
+}
+
+.food-row:hover {
+  background-color: lightgray;
+  color: black;
+}
+
+.bold {
+  font-weight: bold;
 }
 </style>
